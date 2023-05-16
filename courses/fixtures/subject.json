@@ -1,0 +1,49 @@
+[
+{
+  "model": "courses.subject",
+  "pk": 1,
+  "fields": {
+    "title": "Math",
+    "slug": "math"
+  }
+},
+{
+  "model": "courses.course",
+  "pk": 1,
+  "fields": {
+    "owner": 1,
+    "subject": 1,
+    "title": "Math is good book",
+    "slug": "math-is-good-book",
+    "overview": "Math include trignomatery, calculations",
+    "created": "2023-05-16T06:05:18.096Z"
+  }
+},
+{
+  "model": "courses.module",
+  "pk": 1,
+  "fields": {
+    "course": 1,
+    "title": "English",
+    "description": "English is a good labguage"
+  }
+},
+{
+  "model": "courses.module",
+  "pk": 2,
+  "fields": {
+    "course": 1,
+    "title": "Urdu",
+    "description": "Urdu  is our National language"
+  }
+},
+{
+  "model": "courses.module",
+  "pk": 3,
+  "fields": {
+    "course": 1,
+    "title": "Pasthu",
+    "description": "Pashtu is language of pashtun"
+  }
+}
+]
