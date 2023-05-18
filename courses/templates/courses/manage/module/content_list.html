@@ -38,6 +38,9 @@ h1>nabeel hussain can be a good job</h1>
         <div data-id="{{ content.id }}">
           {% with item=content.item %}
             <p>{{ item }} ({{ item|model_name }})</p>
+            {% load embed_video_tags %}
+
+{% video item.url "small" %}
             
             <a href="{% url  'module_content_update' module.id item|model_name item.id %}">
               Edit
