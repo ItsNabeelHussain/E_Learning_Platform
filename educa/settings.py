@@ -42,18 +42,22 @@ INSTALLED_APPS = [
     # local app
     "courses",
     "students",
+    "chat",
     # 3rd Library
     "django_extensions",
     "embed_video",
     "debug_toolbar",
-    'redisboard',
-    'rest_framework',
+    "redisboard",
+    "rest_framework",
+    "channels",
+    "channels_redis",
 ]
 
+
 REST_FRAMEWORK = {
-'DEFAULT_PERMISSION_CLASSES': [
-'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-]
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
+    ]
 }
 MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",  # new added
@@ -67,7 +71,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
 ROOT_URLCONF = "educa.urls"
 
 TEMPLATES = [
@@ -86,7 +89,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "educa.wsgi.application"
+# WSGI_APPLICATION = "educa.wsgi.application"
+ASGI_APPLICATION = "educa.asgi.application"
 
 
 # Database
@@ -166,11 +170,20 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # }
 
 
-CACHES = {
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django.core.cache.backends.redis.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379",
+#     }
+# }
+
+CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379",
-    }
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
 }
 CACHE_MIDDLEWARE_ALIAS = "default"
 CACHE_MIDDLEWARE_SECONDS = 60 * 15
