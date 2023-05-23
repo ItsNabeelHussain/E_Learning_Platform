@@ -2,6 +2,7 @@ from typing import Any, Dict
 
 from django.apps import apps
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.db import models
 from django.db.models.query import QuerySet
 from django.forms.models import modelform_factory
 from django.shortcuts import get_object_or_404, redirect, render
@@ -203,3 +204,5 @@ class CourseDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context["enroll_form"] = CourseEnrollForm(initial={"course": self.object})
         return context
+ 
+

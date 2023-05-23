@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import CourseEnrollForm
 from django.views.generic.list import ListView
 from courses.models import Course
+from django.contrib.auth.models import User
 from django.views.generic.detail import DetailView
 
 
@@ -30,6 +31,7 @@ class StudentEnrollCourseView(LoginRequiredMixin, FormView):
 
 
 
+
     def form_valid(self, form):
         self.course = form.cleaned_data["course"]
         self.course.students.add(self.request.user)
@@ -46,6 +48,10 @@ class StudentCourseListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         qs = super().get_queryset()
         return qs.filter(students__in=[self.request.user])
+    
+    def get_user_list(self):
+        user = User.objects.filter(id=23).annotate(user_profit=F("user_sale"*"user_amount"))
+        return user
 
 
 

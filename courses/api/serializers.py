@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from courses.models import Subject, Course, Module, Content
 
+
 class ModuleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Module
@@ -9,7 +10,7 @@ class ModuleSerializer(serializers.ModelSerializer):
 
 class CourseSerializer(serializers.ModelSerializer):
     modules = ModuleSerializer(many=True, read_only=True)
- 
+
     class Meta:
         model = Course
         fields = [
@@ -18,7 +19,7 @@ class CourseSerializer(serializers.ModelSerializer):
             "title",
             "slug",
             "overview",
-            "created", 
+            "created",
             "owner",
             "modules",
         ]
@@ -31,4 +32,38 @@ class SubjectSerializer(serializers.ModelSerializer):
 
 
 class ItemRelatedField(serializers.RelatedField):
-    
+    def to_representation(self, value):
+        return value.render()
+
+
+class ContentSerializer(serializers.ModelSerializer):
+    item = ItemRelatedField(read_only=True)
+
+    class Meta:
+        model = Content
+        fields = ["order", "item"]
+
+
+class ModuleWithContentsSerializer(serializers.ModelSerializer):
+    content = ContentSerializer(many=True)
+
+    class Meta:
+        module = Module
+        fields = ["order", "title", "description", "contents"]
+
+
+class CourseWithContentsSerializer(serializers.ModelSerializer):
+    modules = ModuleWithContentsSerializer(many=True)
+
+    class Meta:
+        model = Course
+        fields = [
+            "id",
+            "subject",
+            "title",
+            "slug",
+            "overview",
+            "created",
+            "owner",
+            "modules",
+        ]
