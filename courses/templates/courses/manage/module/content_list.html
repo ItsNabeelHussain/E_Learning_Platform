@@ -39,9 +39,17 @@ h1>nabeel hussain can be a good job</h1>
           {% with item=content.item %}
             <p>{{ item }} ({{ item|model_name }})</p>
             {% load embed_video_tags %}
+            {{ item.content|linebreaks }}
 
-{% video item.url "small" %}
-            
+              {% video item.url "small" %}
+              <p>
+                <img src="{{ item.file.url }}" alt="{{ item.title }}">
+                </p>
+                
+           
+                  <p>
+                    <a href="{{ item.file.url }}" class="button">Download file</a>
+                    </p>
             <a href="{% url  'module_content_update' module.id item|model_name item.id %}">
               Edit
             </a>
