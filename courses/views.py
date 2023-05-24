@@ -34,7 +34,7 @@ class OwnerMixin:
         return qs.filter(owner=self.request.user)
 
 
-class OwnerEditMixin: 
+class OwnerEditMixin:
     def form_valid(self, form):
         form.instance.owner = self.request.user
         return super().form_valid(form)
@@ -204,5 +204,3 @@ class CourseDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context["enroll_form"] = CourseEnrollForm(initial={"course": self.object})
         return context
- 
-

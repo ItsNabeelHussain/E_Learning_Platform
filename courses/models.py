@@ -14,7 +14,7 @@ class Subject(models.Model):
         ordering = ["title"]
 
         def __str__(self) -> str:
-            return f"{self.title}. {self.title}"
+            return self.title
 
 
 class Course(models.Model):
