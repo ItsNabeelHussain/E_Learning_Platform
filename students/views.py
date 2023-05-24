@@ -29,9 +29,6 @@ class StudentEnrollCourseView(LoginRequiredMixin, FormView):
     course = None
     form_class = CourseEnrollForm
 
-
-
-
     def form_valid(self, form):
         self.course = form.cleaned_data["course"]
         self.course.students.add(self.request.user)
@@ -48,30 +45,30 @@ class StudentCourseListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         qs = super().get_queryset()
         return qs.filter(students__in=[self.request.user])
-    
-    def get_user_list(self):
-        user = User.objects.filter(id=23).annotate(user_profit=F("user_sale"*"user_amount"))
-        return user
 
+    def get_user_list(self):
+        user = User.objects.filter(id=23).annotate(
+            user_profit=F("user_sale" * "user_amount")
+        )
+        return user
 
 
 class StudentCourseDetailView(DetailView):
     model = Course
-    template_name = 'students/course/detail.html'
+    template_name = "students/course/detail.html"
 
     def get_queryset(self):
         qs = super().get_queryset()
         return qs.filter(students__in=[self.request.user])
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # get course object
         course = self.get_object()
-        if 'module_id' in self.kwargs:
-        # get current module
-            context['module'] = course.modules.get(
-id=self.kwargs['module_id'])
+        if "module_id" in self.kwargs:
+            # get current module
+            context["module"] = course.modules.get(id=self.kwargs["module_id"])
         else:
             # get first module
-            context['module'] = course.modules.all()[0]
+            context["module"] = course.modules.all()[0]
             return context
