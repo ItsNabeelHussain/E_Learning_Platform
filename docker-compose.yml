@@ -1,5 +1,11 @@
 services:
 
+  cache:
+    image: redis:7.0.4
+    restart: always
+    volumes:
+      - ./data/cache:/data
+
   db:
     image: postgres:14.5
     restart: always
@@ -10,14 +16,32 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
 
+  nginx:
+    image: nginx:1.23.1
+    restart: always 
+    volumes:
+      - ./config/nginx:/etc/nginx/templates
+      - .:/code
+    ports:
+    - "80:80"
+
   web:
     build: .
-    command: ["./wait-for-it.sh", "db:5432", "--","python", "/code/educa/manage.py", "runserver","0.0.0.0:8003"]
+    command:
+      [
+        "./wait-for-it.sh",
+        "db:5432",
+        "--",
+        "python",
+        "manage.py",
+        "runserver",
+        "0.0.0.0:8000"
+      ]
     restart: always
     volumes:
       - .:/code
     ports:
-      - "8003:8000"
+      - "8000:8000"
     environment:
       - DJANGO_SETTINGS_MODULE=educa.settings.prod
       - POSTGRES_DB=postgres
@@ -26,3 +50,4 @@ services:
 
     depends_on:
       - db
+      - cache
